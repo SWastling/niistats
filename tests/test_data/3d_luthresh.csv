@@ -1,0 +1,9 @@
+Subject,NIfTI File,Segmentation File,Label Name,Lower Threshold,Upper Threshold,Voxel Count,Volume mm3,Mean,Standard Deviation,Minimum,First Centile,Fifth Centile,First Quartile,Median,Third Quartile,Ninety-Fifth Centile,Ninety-Ninth Centile,Maximum
+subj_01,test.nii,seg.nii,1.0,25.0,175.0,25,200.0,37.0,7.359800721939872,25.0,25.24,26.2,31.0,37.0,43.0,47.8,48.76,49.0
+subj_02,test.nii,seg.nii,1.0,25.0,175.0,37,296.0,62.0,21.64871050817269,26.0,26.72,29.6,44.0,62.0,80.0,94.39999999999999,97.28,98.0
+subj_01,test.nii,seg.nii,2.0,25.0,175.0,50,400.0,74.5,14.577379737113251,50.0,50.49,52.45,62.25,74.5,86.75,96.55,98.50999999999999,99.0
+subj_02,test.nii,seg.nii,2.0,25.0,175.0,38,304.0,137.0,22.22611077089287,100.0,100.74,103.7,118.5,137.0,155.5,170.3,173.26,174.0
+subj_01,test.nii,seg.nii,3.0,25.0,175.0,37,296.0,62.0,21.64871050817269,26.0,26.72,29.6,44.0,62.0,80.0,94.39999999999999,97.28,98.0
+subj_02,test.nii,seg.nii,3.0,25.0,175.0,37,296.0,100.0,43.29742101634538,28.0,29.44,35.2,64.0,100.0,136.0,164.79999999999998,170.56,172.0
+subj_01,test.nii,seg.nii,4.0,25.0,175.0,38,304.0,137.0,22.22611077089287,100.0,100.74,103.7,118.5,137.0,155.5,170.3,173.26,174.0
+subj_02,test.nii,seg.nii,4.0,25.0,175.0,0,0.0,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan

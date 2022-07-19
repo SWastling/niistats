@@ -1,0 +1,2 @@
+"Subject","NIfTI File","Segmentation File","Label Name","Error"
+"test_niistats_label_missing_in0","test.nii","seg.nii",2,"Label not found in segmentation image"

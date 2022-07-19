@@ -1,0 +1,3 @@
+Subject,NIfTI File,Segmentation File,Label Name,Voxel Count,Volume mm3,Mean,Standard Deviation,Minimum,First Centile,Fifth Centile,First Quartile,Median,Third Quartile,Ninety-Fifth Centile,Ninety-Ninth Centile,Maximum
+test_niistats_all_labels_inpro0,test.nii,seg.nii,1.0,50,400.0,24.5,14.577379737113251,0.0,0.49,2.45,12.25,24.5,36.75,46.55,48.51,49.0
+test_niistats_all_labels_inpro0,test.nii,seg.nii,2.0,50,400.0,74.5,14.577379737113251,50.0,50.49,52.45,62.25,74.5,86.75,96.55,98.50999999999999,99.0

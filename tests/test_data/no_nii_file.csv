@@ -1,0 +1,2 @@
+Subject,NIfTI File,Error
+test_niistats_no_nii_file_inpr0,b,NIfTI file not found

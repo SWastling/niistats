@@ -1,0 +1,2 @@
+Subject,NIfTI File,Lower Threshold,Upper Threshold,Voxel Count,Volume mm3,Mean,Standard Deviation,Minimum,First Centile,Fifth Centile,First Quartile,Median,Third Quartile,Ninety-Fifth Centile,Ninety-Ninth Centile,Maximum
+test_niistats_2D_luthresh_inpr0,two_dim.nii,10.0,90.0,81,648.0,50.0,23.526580712037184,10.0,10.8,14.0,30.0,50.0,70.0,86.0,89.2,90.0

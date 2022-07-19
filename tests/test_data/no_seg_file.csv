@@ -1,0 +1,2 @@
+"Subject","NIfTI File","Segmentation File","Label Name","Error"
+"test_niistats_no_seg_file_inpr0","test.nii","c",,"Segmentation file not found"

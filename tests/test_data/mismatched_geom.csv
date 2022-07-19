@@ -1,0 +1,2 @@
+"Subject","NIfTI File","Segmentation File","Label Name","Error"
+"test_niistats_mismatched_geom_0","test.nii","seg.nii",,"NIfTI and segmentation have mismatched geometry"

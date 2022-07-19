@@ -1,0 +1,2 @@
+"Subject","NIfTI File","Segmentation File","Label Name","Error"
+"test_niistats_no_labels_inproc0","test.nii","seg.nii",,"No labels found in segmentation"

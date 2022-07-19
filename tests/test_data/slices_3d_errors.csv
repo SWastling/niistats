@@ -1,0 +1,2 @@
+Subject,NIfTI File,Slice,Error
+test_niistats_3d_slices_inproc0,test.nii,3,Slice not in NIfTI image

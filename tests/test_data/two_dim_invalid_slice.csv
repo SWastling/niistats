@@ -1,0 +1,5 @@
+Subject,NIfTI File,Slice,Error
+test_niistats_2D_invalid_slice0,two_dim.nii,2,Slice not in NIfTI image
+test_niistats_2D_invalid_slice0,two_dim.nii,3,Slice not in NIfTI image
+test_niistats_2D_invalid_slice0,two_dim.nii,4,Slice not in NIfTI image
+test_niistats_2D_invalid_slice0,two_dim.nii,5,Slice not in NIfTI image

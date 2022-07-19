@@ -1,0 +1,11 @@
+Subject,NIfTI File,Segmentation File,Label Name,Slice,Error
+subj_01,test.nii,seg.nii,1,3,Slice not in NIfTI image
+subj_01,test.nii,seg.nii,2,3,Slice not in NIfTI image
+subj_01,test.nii,seg.nii,3,3,Slice not in NIfTI image
+subj_01,test.nii,seg.nii,4,3,Slice not in NIfTI image
+subj_01,test.nii,seg.nii,5,,Label not found in segmentation image
+subj_02,test.nii,seg.nii,1,3,Slice not in NIfTI image
+subj_02,test.nii,seg.nii,2,3,Slice not in NIfTI image
+subj_02,test.nii,seg.nii,3,3,Slice not in NIfTI image
+subj_02,test.nii,seg.nii,4,3,Slice not in NIfTI image
+subj_02,test.nii,seg.nii,5,,Label not found in segmentation image

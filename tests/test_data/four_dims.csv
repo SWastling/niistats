@@ -1,0 +1,2 @@
+Subject,NIfTI File,Error
+test_niistats_4D_inprocess_0,four_dim.nii,NIfTI image should not have more than 3-dimensions
