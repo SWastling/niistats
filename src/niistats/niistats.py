@@ -244,21 +244,19 @@ def main():
 
     parser.add_argument(
         "nii",
-        help="relative path from subject directory to NIfTI image "
-        "(e.g. ana/ff/calf/fatfraction.nii.gz)",
+        help="relative path from subject directory to NIfTI image",
         type=pathlib.Path,
     )
 
     parser.add_argument(
         "o",
-        help="output CSV file to store results (e.g. results.csv)",
+        help="output CSV file to store results",
         type=pathlib.Path,
     )
 
     parser.add_argument(
         "-seg",
-        help="relative path from subject directory to segmentation "
-        "(e.g. roi/muscle_seg.nii.gz)",
+        help="relative path from subject directory to segmentation",
         type=pathlib.Path,
     )
 
