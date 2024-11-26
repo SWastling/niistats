@@ -7,14 +7,11 @@ import pathlib
 import re
 import sys
 
-import importlib_metadata as metadata
+import importlib.metadata
 import nibabel as nib
 import numpy as np
 
-try:
-    __version__ = metadata.version("niistats")
-except metadata.PackageNotFoundError:  # pragma: no cover
-    __version__ = "unknown"
+__version__ = importlib.metadata.version("niistats")
 
 
 def get_range(selection):
