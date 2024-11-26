@@ -20,7 +20,7 @@ using a comma separated list (like 3,4) or inclusive ranges with a colon (like 5
 - `-slices`: report statistics, slice-by-slice, from specified slices using a 
 comma separated list (like 3,4) or inclusive ranges with a colon (like 5:10). 
 `-slices` counts from _ONE_ like itk-SNAP
-- `l`: lower threshold to apply to NIfTI image before calculating statistics
+- `-l`: lower threshold to apply to NIfTI image before calculating statistics
 - `-u`: upper threshold to apply to NIfTI image before calculating statistics
 - `--version`: show version, and exit
 
@@ -106,26 +106,22 @@ niistats subject_* ana/ff/thigh/fatfraction.nii.gz common/ana/thigh_results.csv 
 1. Create a new virtual environment in which to install `niistats`:
 
     ```bash
-    python3 -m venv niistats-env
+    uv venv niistats-venv
     ```
    
 2. Activate the virtual environment:
 
     ```bash
-    source niistats-env/bin/activate
+    source niistats-venv/bin/activate
     ```
 
-3. Upgrade `pip` and `build` within your virtual environment:
-
+4. Install using `uv pip`:
     ```bash
-    pip install --upgrade pip
-    pip install --upgrade build
+    uv pip install git+https://github.com/SWastling/niistats.git
     ```
-
-4. Install using `pip`:
-    ```bash
-    pip install git+https://github.com/SWastling/niistats.git
-    ```
+   
+> [!TIP]
+> You can also run `niistats` without installing it using [uvx](https://docs.astral.sh/uv/guides/tools/) i.e. with the command `uvx --from  git+https://github.com/SWastling/niistats.git niistats`
 
 ## License
 See [MIT license](./LICENSE)
