@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [release-1.0.3](https://github.com/SWastling/niistats/tree/release-1.0.3) - 2024-11-26
+
+### Changed
+
+- Replaced .coveragerc file that had been deleted in error
+
 ## [release-1.0.2](https://github.com/SWastling/niistats/tree/release-1.0.2) - 2024-11-26
 
 ### Changed
