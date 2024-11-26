@@ -301,26 +301,26 @@ SCRIPT_USAGE = f"usage: {SCRIPT_NAME} [-h]"
 
 
 def test_prints_help_1(script_runner):
-    result = script_runner.run(SCRIPT_NAME)
+    result = script_runner.run([SCRIPT_NAME])
     assert result.success
     assert result.stdout.startswith(SCRIPT_USAGE)
 
 
 def test_prints_help_2(script_runner):
-    result = script_runner.run(SCRIPT_NAME, "-h")
+    result = script_runner.run([SCRIPT_NAME, "-h"])
     assert result.success
     assert result.stdout.startswith(SCRIPT_USAGE)
 
 
 def test_prints_help_for_invalid_option(script_runner):
-    result = script_runner.run(SCRIPT_NAME, "-!")
+    result = script_runner.run([SCRIPT_NAME, "-!"])
     assert not result.success
     assert result.stderr.startswith(SCRIPT_USAGE)
 
 
 def test_niistats_invalid_slices_option(script_runner):
 
-    result = script_runner.run(SCRIPT_NAME, "a", "b", "c", "-slices", "5:-5")
+    result = script_runner.run([SCRIPT_NAME, "a", "b", "c", "-slices", "5:-5"])
     assert not result.success
     assert result.stderr.startswith("slice range specified with -slices is not valid")
 
@@ -328,7 +328,7 @@ def test_niistats_invalid_slices_option(script_runner):
 def test_niistats_invalid_seg_label_option(script_runner, tmp_path):
 
     result = script_runner.run(
-        SCRIPT_NAME, "a", "b", "c", "-seg", "d", "-seg_labels", "5:-5"
+        [SCRIPT_NAME, "a", "b", "c", "-seg", "d", "-seg_labels", "5:-5"]
     )
     assert not result.success
     assert result.stderr.startswith(
@@ -340,7 +340,7 @@ def test_niistats_subj_dir_missing(script_runner, tmp_path):
     results_csv_fp = tmp_path / "results.csv"
     error_csv_fp = tmp_path / "results_errors.csv"
 
-    result = script_runner.run(SCRIPT_NAME, "a", "b", str(results_csv_fp))
+    result = script_runner.run([SCRIPT_NAME, "a", "b", str(results_csv_fp)])
     assert result.success
     assert not results_csv_fp.is_file()
     assert error_csv_fp.is_file()
@@ -360,7 +360,7 @@ def test_niistats_no_nii_file(script_runner, tmp_path):
     results_csv_fp = tmp_path / "results.csv"
     error_csv_fp = tmp_path / "results_errors.csv"
 
-    result = script_runner.run(SCRIPT_NAME, str(tmp_path), "b", str(results_csv_fp))
+    result = script_runner.run([SCRIPT_NAME, str(tmp_path), "b", str(results_csv_fp)])
     assert result.success
     assert not results_csv_fp.is_file()
     assert error_csv_fp.is_file()
@@ -385,7 +385,7 @@ def test_niistats_4D(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME, str(tmp_path), "four_dim.nii", str(results_csv_fp)
+        [SCRIPT_NAME, str(tmp_path), "four_dim.nii", str(results_csv_fp)]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -411,7 +411,7 @@ def test_niistats_2D(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME, str(tmp_path), "two_dim.nii", str(results_csv_fp)
+        [SCRIPT_NAME, str(tmp_path), "two_dim.nii", str(results_csv_fp)]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -437,7 +437,7 @@ def test_niistats_2D_invalid_slice(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME, str(tmp_path), "two_dim.nii", str(results_csv_fp), "-slices", "2:5"
+        [SCRIPT_NAME, str(tmp_path), "two_dim.nii", str(results_csv_fp), "-slices", "2:5"]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -466,7 +466,7 @@ def test_niistats_3d_slices(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME, str(tmp_path), "test.nii", str(results_csv_fp), "-slices", "1:3"
+        [SCRIPT_NAME, str(tmp_path), "test.nii", str(results_csv_fp), "-slices", "1:3"]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -500,12 +500,12 @@ def test_niistats_seg_label_no_seg_file(script_runner, tmp_path):
     results_csv_fp = tmp_path / "results.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path),
         str(nii_fp),
         str(results_csv_fp),
         "-seg_labels",
-        "1:5",
+        "1:5"]
     )
     assert not result.success
     assert result.stderr.startswith(
@@ -523,7 +523,7 @@ def test_niistats_no_seg_file(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME, str(tmp_path), "test.nii", str(results_csv_fp), "-seg", "c"
+        [SCRIPT_NAME, str(tmp_path), "test.nii", str(results_csv_fp), "-seg", "c"]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -553,12 +553,12 @@ def test_niistats_mismatched_geom(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path),
         "test.nii",
         str(results_csv_fp),
         "-seg",
-        "seg.nii",
+        "seg.nii"]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -588,12 +588,12 @@ def test_niistats_no_labels(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path),
         "test.nii",
         str(results_csv_fp),
         "-seg",
-        "seg.nii",
+        "seg.nii"]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -623,14 +623,14 @@ def test_niistats_label_missing(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path),
         "test.nii",
         str(results_csv_fp),
         "-seg",
         "seg.nii",
         "-seg_labels",
-        "1:2",
+        "1:2"]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -671,12 +671,12 @@ def test_niistats_all_labels(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path),
         "test.nii",
         str(results_csv_fp),
         "-seg",
-        "seg.nii",
+        "seg.nii"]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -730,7 +730,7 @@ def test_niistats_2subj(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path) + "/subj_01",
         str(tmp_path) + "/subj_02",
         "test.nii",
@@ -740,7 +740,7 @@ def test_niistats_2subj(script_runner, tmp_path):
         "-slices",
         "1:3",
         "-seg_labels",
-        "1:5",
+        "1:5"]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -803,13 +803,13 @@ def test_niistats_2subj_all_slice(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path) + "/subj_01",
         str(tmp_path) + "/subj_02",
         "test.nii",
         str(results_csv_fp),
         "-seg",
-        "seg.nii",
+        "seg.nii"]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -835,14 +835,14 @@ def test_niistats_2D_luthresh(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path),
         "two_dim.nii",
         str(results_csv_fp),
         "-l",
         "10",
         "-u",
-        "90",
+        "90"]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -896,7 +896,7 @@ def test_niistats_3d_luthresh(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        SCRIPT_NAME,
+        [SCRIPT_NAME,
         str(tmp_path) + "/subj_01",
         str(tmp_path) + "/subj_02",
         "test.nii",
@@ -906,7 +906,7 @@ def test_niistats_3d_luthresh(script_runner, tmp_path):
         "-l",
         "25",
         "-u",
-        "175",
+        "175"]
     )
     assert result.success
     assert results_csv_fp.is_file()
