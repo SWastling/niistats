@@ -232,8 +232,10 @@ def test_error_fieldnames(seg_opt, sliced_opt, expected_output):
 
 
 def test_get_voxel_volume():
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.ones((32, 32, 16)), np.eye(4))
-    nii_obj_2 = nib.nifti1.Nifti1Image(np.ones((32, 32, 16)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(np.ones((32, 32, 16)), np.eye(4), dtype=np.uint8)
+    nii_obj_2 = nib.nifti1.Nifti1Image(
+        np.ones((32, 32, 16)), 2 * np.eye(4), dtype=np.uint8
+    )
 
     assert niistats.get_vox_volume(nii_obj_1) == 1.0
     assert niistats.get_vox_volume(nii_obj_2) == 8.0
@@ -280,17 +282,17 @@ def test_get_stats_2():
     ref_stats = {
         "Voxel Count": 0,
         "Volume mm3": 0,
-        "Mean": np.NaN,
-        "Standard Deviation": np.NaN,
-        "Minimum": np.NaN,
-        "First Centile": np.NaN,
-        "Fifth Centile": np.NaN,
-        "First Quartile": np.NaN,
-        "Median": np.NaN,
-        "Third Quartile": np.NaN,
-        "Ninety-Fifth Centile": np.NaN,
-        "Ninety-Ninth Centile": np.NaN,
-        "Maximum": np.NaN,
+        "Mean": np.nan,
+        "Standard Deviation": np.nan,
+        "Minimum": np.nan,
+        "First Centile": np.nan,
+        "Fifth Centile": np.nan,
+        "First Quartile": np.nan,
+        "Median": np.nan,
+        "Third Quartile": np.nan,
+        "Ninety-Fifth Centile": np.nan,
+        "Ninety-Ninth Centile": np.nan,
+        "Maximum": np.nan,
     }
 
     assert niistats.get_stats(a, vox_vol) == ref_stats
@@ -381,7 +383,7 @@ def test_niistats_no_nii_file(script_runner, tmp_path):
 
 def test_niistats_4D(script_runner, tmp_path):
     nii_fp = tmp_path / "four_dim.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.ones((3, 3, 3, 3)), np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(np.ones((3, 3, 3, 3)), np.eye(4), dtype=np.uint8)
     nii_obj_1.to_filename(nii_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -406,7 +408,9 @@ def test_niistats_4D(script_runner, tmp_path):
 
 def test_niistats_2D(script_runner, tmp_path):
     nii_fp = tmp_path / "two_dim.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -431,7 +435,9 @@ def test_niistats_2D(script_runner, tmp_path):
 
 def test_niistats_2D_invalid_slice(script_runner, tmp_path):
     nii_fp = tmp_path / "two_dim.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -467,7 +473,7 @@ def test_niistats_3d_slices(script_runner, tmp_path):
     data = np.stack([sl1, sl2], axis=-1)
 
     nii_fp = tmp_path / "test.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4), dtype=np.uint8)
     nii_obj_1.to_filename(nii_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -501,7 +507,9 @@ def test_niistats_3d_slices(script_runner, tmp_path):
 
 def test_niistats_seg_label_no_seg_file(script_runner, tmp_path):
     nii_fp = tmp_path / "test.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -524,7 +532,9 @@ def test_niistats_seg_label_no_seg_file(script_runner, tmp_path):
 
 def test_niistats_no_seg_file(script_runner, tmp_path):
     nii_fp = tmp_path / "test.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -549,11 +559,15 @@ def test_niistats_no_seg_file(script_runner, tmp_path):
 
 def test_niistats_mismatched_geom(script_runner, tmp_path):
     nii_fp = tmp_path / "test.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     seg_fp = tmp_path / "seg.nii"
-    seg_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), np.eye(4))
+    seg_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), np.eye(4), dtype=np.uint8
+    )
     seg_obj_1.to_filename(seg_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -578,11 +592,15 @@ def test_niistats_mismatched_geom(script_runner, tmp_path):
 
 def test_niistats_no_labels(script_runner, tmp_path):
     nii_fp = tmp_path / "test.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     seg_fp = tmp_path / "seg.nii"
-    seg_obj_1 = nib.nifti1.Nifti1Image(np.zeros((10, 10)), 2 * np.eye(4))
+    seg_obj_1 = nib.nifti1.Nifti1Image(
+        np.zeros((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     seg_obj_1.to_filename(seg_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -607,11 +625,13 @@ def test_niistats_no_labels(script_runner, tmp_path):
 
 def test_niistats_label_missing(script_runner, tmp_path):
     nii_fp = tmp_path / "test.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     seg_fp = tmp_path / "seg.nii"
-    seg_obj_1 = nib.nifti1.Nifti1Image(np.ones((10, 10)), 2 * np.eye(4))
+    seg_obj_1 = nib.nifti1.Nifti1Image(np.ones((10, 10)), 2 * np.eye(4), dtype=np.uint8)
     seg_obj_1.to_filename(seg_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -654,13 +674,15 @@ def test_niistats_label_missing(script_runner, tmp_path):
 
 def test_niistats_all_labels(script_runner, tmp_path):
     nii_fp = tmp_path / "test.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.int64
+    )
     nii_obj_1.to_filename(nii_fp)
 
     seg_fp = tmp_path / "seg.nii"
     seg_data = np.ones((10, 10))
     seg_data[5:10, :] = 2
-    seg_obj_1 = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4))
+    seg_obj_1 = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4), dtype=np.int64)
     seg_obj_1.to_filename(seg_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -694,8 +716,8 @@ def test_niistats_2subj(script_runner, tmp_path):
     sl2 = 2 * np.arange(100).reshape((10, 10))
     data = np.stack([sl1, sl2], axis=-1)
 
-    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4))
-    nii_obj_2 = nib.nifti1.Nifti1Image(2 * data, 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4), dtype=np.int64)
+    nii_obj_2 = nib.nifti1.Nifti1Image(2 * data, 2 * np.eye(4), dtype=np.int64)
 
     nii_1_fp = subj_1_dp / "test.nii"
     nii_2_fp = subj_2_dp / "test.nii"
@@ -708,7 +730,7 @@ def test_niistats_2subj(script_runner, tmp_path):
     seg_data[0:5, :, 1] = 3
     seg_data[5:10, :, 1] = 4
 
-    seg_obj = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4))
+    seg_obj = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4), dtype=np.int64)
 
     seg_1_fp = subj_1_dp / "seg.nii"
     seg_2_fp = subj_2_dp / "seg.nii"
@@ -768,8 +790,8 @@ def test_niistats_2subj_all_slice(script_runner, tmp_path):
     sl2 = 2 * np.arange(100).reshape((10, 10))
     data = np.stack([sl1, sl2], axis=-1)
 
-    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4))
-    nii_obj_2 = nib.nifti1.Nifti1Image(2 * data, 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4), dtype=np.int64)
+    nii_obj_2 = nib.nifti1.Nifti1Image(2 * data, 2 * np.eye(4), dtype=np.int64)
 
     nii_1_fp = subj_1_dp / "test.nii"
     nii_2_fp = subj_2_dp / "test.nii"
@@ -782,7 +804,7 @@ def test_niistats_2subj_all_slice(script_runner, tmp_path):
     seg_data[0:5, :, 1] = 3
     seg_data[5:10, :, 1] = 4
 
-    seg_obj = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4))
+    seg_obj = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4), dtype=np.int64)
 
     seg_1_fp = subj_1_dp / "seg.nii"
     seg_2_fp = subj_2_dp / "seg.nii"
@@ -820,7 +842,9 @@ def test_niistats_2subj_all_slice(script_runner, tmp_path):
 
 def test_niistats_2D_luthresh(script_runner, tmp_path):
     nii_fp = tmp_path / "two_dim.nii"
-    nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(
+        np.arange(100).reshape((10, 10)), 2 * np.eye(4), dtype=np.uint8
+    )
     nii_obj_1.to_filename(nii_fp)
 
     results_csv_fp = tmp_path / "results.csv"
@@ -863,8 +887,8 @@ def test_niistats_3d_luthresh(script_runner, tmp_path):
     sl2 = 2 * np.arange(100).reshape((10, 10))
     data = np.stack([sl1, sl2], axis=-1)
 
-    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4))
-    nii_obj_2 = nib.nifti1.Nifti1Image(2 * data, 2 * np.eye(4))
+    nii_obj_1 = nib.nifti1.Nifti1Image(data, 2 * np.eye(4), dtype=np.int64)
+    nii_obj_2 = nib.nifti1.Nifti1Image(2 * data, 2 * np.eye(4), dtype=np.int64)
 
     nii_1_fp = subj_1_dp / "test.nii"
     nii_2_fp = subj_2_dp / "test.nii"
@@ -877,7 +901,7 @@ def test_niistats_3d_luthresh(script_runner, tmp_path):
     seg_data[0:5, :, 1] = 3
     seg_data[5:10, :, 1] = 4
 
-    seg_obj = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4))
+    seg_obj = nib.nifti1.Nifti1Image(seg_data, 2 * np.eye(4), dtype=np.int64)
 
     seg_1_fp = subj_1_dp / "seg.nii"
     seg_2_fp = subj_2_dp / "seg.nii"

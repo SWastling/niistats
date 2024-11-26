@@ -200,7 +200,7 @@ def get_stats(a, vox_vol):
     :rtype: dict
     """
 
-    # remove elements that are NaN
+    # remove elements that are nan
     a = a[~np.isnan(a)]
 
     if a.size > 0:
@@ -208,9 +208,9 @@ def get_stats(a, vox_vol):
         mean_a = np.mean(a)
         std_a = np.std(a, ddof=1)
     else:
-        p = [np.NaN] * 9
-        mean_a = np.NaN
-        std_a = np.NaN
+        p = [np.nan] * 9
+        mean_a = np.nan
+        std_a = np.nan
 
     return {
         "Voxel Count": a.size,
