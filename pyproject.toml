@@ -1,6 +1,6 @@
 [project]
 name = "niistats"
-version = "1.0.2"
+version = "1.0.3"
 description = "Compute NIfTI image statistics"
 readme = "README.md"
 authors = [
