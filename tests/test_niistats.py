@@ -1,5 +1,6 @@
 import csv
 import pathlib
+import importlib.metadata
 
 import nibabel as nib
 import numpy as np
@@ -9,6 +10,8 @@ import niistats.niistats as niistats
 
 THIS_DIR = pathlib.Path(__file__).resolve().parent
 TEST_DATA_DIR = THIS_DIR / "test_data"
+
+__version__ = importlib.metadata.version("niistats")
 
 
 @pytest.mark.parametrize(
@@ -25,7 +28,6 @@ def test_get_range(selection, expected_output):
 
 
 def test_check_shape_and_orientation():
-
     nii_obj_1 = nib.nifti1.Nifti1Image(np.ones((32, 32, 16)), np.eye(4))
     nii_obj_2 = nib.nifti1.Nifti1Image(np.ones((32, 32, 16)), 2 * np.eye(4))
     nii_obj_3 = nib.nifti1.Nifti1Image(np.ones((32, 32, 18)), np.eye(4))
@@ -230,7 +232,6 @@ def test_error_fieldnames(seg_opt, sliced_opt, expected_output):
 
 
 def test_get_voxel_volume():
-
     nii_obj_1 = nib.nifti1.Nifti1Image(np.ones((32, 32, 16)), np.eye(4))
     nii_obj_2 = nib.nifti1.Nifti1Image(np.ones((32, 32, 16)), 2 * np.eye(4))
 
@@ -250,7 +251,6 @@ def test_thresh_mask(data, l_thr, u_thr, expected_output):
 
 
 def test_get_stats_1():
-
     a = np.append(np.arange(101), [np.nan, np.nan, np.nan])
     vox_vol = 8
     ref_stats = {
@@ -318,15 +318,20 @@ def test_prints_help_for_invalid_option(script_runner):
     assert result.stderr.startswith(SCRIPT_USAGE)
 
 
-def test_niistats_invalid_slices_option(script_runner):
+def test_prints_version(script_runner):
+    result = script_runner.run([SCRIPT_NAME, "--version"])
+    assert result.success
+    expected_version_output = SCRIPT_NAME + " " + __version__ + "\n"
+    assert result.stdout == expected_version_output
 
+
+def test_niistats_invalid_slices_option(script_runner):
     result = script_runner.run([SCRIPT_NAME, "a", "b", "c", "-slices", "5:-5"])
     assert not result.success
     assert result.stderr.startswith("slice range specified with -slices is not valid")
 
 
 def test_niistats_invalid_seg_label_option(script_runner, tmp_path):
-
     result = script_runner.run(
         [SCRIPT_NAME, "a", "b", "c", "-seg", "d", "-seg_labels", "5:-5"]
     )
@@ -356,7 +361,6 @@ def test_niistats_subj_dir_missing(script_runner, tmp_path):
 
 
 def test_niistats_no_nii_file(script_runner, tmp_path):
-
     results_csv_fp = tmp_path / "results.csv"
     error_csv_fp = tmp_path / "results_errors.csv"
 
@@ -376,7 +380,6 @@ def test_niistats_no_nii_file(script_runner, tmp_path):
 
 
 def test_niistats_4D(script_runner, tmp_path):
-
     nii_fp = tmp_path / "four_dim.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.ones((3, 3, 3, 3)), np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -402,7 +405,6 @@ def test_niistats_4D(script_runner, tmp_path):
 
 
 def test_niistats_2D(script_runner, tmp_path):
-
     nii_fp = tmp_path / "two_dim.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -428,7 +430,6 @@ def test_niistats_2D(script_runner, tmp_path):
 
 
 def test_niistats_2D_invalid_slice(script_runner, tmp_path):
-
     nii_fp = tmp_path / "two_dim.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -437,7 +438,14 @@ def test_niistats_2D_invalid_slice(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME, str(tmp_path), "two_dim.nii", str(results_csv_fp), "-slices", "2:5"]
+        [
+            SCRIPT_NAME,
+            str(tmp_path),
+            "two_dim.nii",
+            str(results_csv_fp),
+            "-slices",
+            "2:5",
+        ]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -492,7 +500,6 @@ def test_niistats_3d_slices(script_runner, tmp_path):
 
 
 def test_niistats_seg_label_no_seg_file(script_runner, tmp_path):
-
     nii_fp = tmp_path / "test.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -500,12 +507,14 @@ def test_niistats_seg_label_no_seg_file(script_runner, tmp_path):
     results_csv_fp = tmp_path / "results.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path),
-        str(nii_fp),
-        str(results_csv_fp),
-        "-seg_labels",
-        "1:5"]
+        [
+            SCRIPT_NAME,
+            str(tmp_path),
+            str(nii_fp),
+            str(results_csv_fp),
+            "-seg_labels",
+            "1:5",
+        ]
     )
     assert not result.success
     assert result.stderr.startswith(
@@ -514,7 +523,6 @@ def test_niistats_seg_label_no_seg_file(script_runner, tmp_path):
 
 
 def test_niistats_no_seg_file(script_runner, tmp_path):
-
     nii_fp = tmp_path / "test.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -540,7 +548,6 @@ def test_niistats_no_seg_file(script_runner, tmp_path):
 
 
 def test_niistats_mismatched_geom(script_runner, tmp_path):
-
     nii_fp = tmp_path / "test.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -553,12 +560,7 @@ def test_niistats_mismatched_geom(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path),
-        "test.nii",
-        str(results_csv_fp),
-        "-seg",
-        "seg.nii"]
+        [SCRIPT_NAME, str(tmp_path), "test.nii", str(results_csv_fp), "-seg", "seg.nii"]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -575,7 +577,6 @@ def test_niistats_mismatched_geom(script_runner, tmp_path):
 
 
 def test_niistats_no_labels(script_runner, tmp_path):
-
     nii_fp = tmp_path / "test.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -588,12 +589,7 @@ def test_niistats_no_labels(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path),
-        "test.nii",
-        str(results_csv_fp),
-        "-seg",
-        "seg.nii"]
+        [SCRIPT_NAME, str(tmp_path), "test.nii", str(results_csv_fp), "-seg", "seg.nii"]
     )
     assert result.success
     assert not results_csv_fp.is_file()
@@ -610,7 +606,6 @@ def test_niistats_no_labels(script_runner, tmp_path):
 
 
 def test_niistats_label_missing(script_runner, tmp_path):
-
     nii_fp = tmp_path / "test.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -623,14 +618,16 @@ def test_niistats_label_missing(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path),
-        "test.nii",
-        str(results_csv_fp),
-        "-seg",
-        "seg.nii",
-        "-seg_labels",
-        "1:2"]
+        [
+            SCRIPT_NAME,
+            str(tmp_path),
+            "test.nii",
+            str(results_csv_fp),
+            "-seg",
+            "seg.nii",
+            "-seg_labels",
+            "1:2",
+        ]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -656,7 +653,6 @@ def test_niistats_label_missing(script_runner, tmp_path):
 
 
 def test_niistats_all_labels(script_runner, tmp_path):
-
     nii_fp = tmp_path / "test.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -671,12 +667,7 @@ def test_niistats_all_labels(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path),
-        "test.nii",
-        str(results_csv_fp),
-        "-seg",
-        "seg.nii"]
+        [SCRIPT_NAME, str(tmp_path), "test.nii", str(results_csv_fp), "-seg", "seg.nii"]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -693,7 +684,6 @@ def test_niistats_all_labels(script_runner, tmp_path):
 
 
 def test_niistats_2subj(script_runner, tmp_path):
-
     subj_1_dp = tmp_path / "subj_01"
     subj_2_dp = tmp_path / "subj_02"
 
@@ -730,17 +720,19 @@ def test_niistats_2subj(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path) + "/subj_01",
-        str(tmp_path) + "/subj_02",
-        "test.nii",
-        str(results_csv_fp),
-        "-seg",
-        "seg.nii",
-        "-slices",
-        "1:3",
-        "-seg_labels",
-        "1:5"]
+        [
+            SCRIPT_NAME,
+            str(tmp_path) + "/subj_01",
+            str(tmp_path) + "/subj_02",
+            "test.nii",
+            str(results_csv_fp),
+            "-seg",
+            "seg.nii",
+            "-slices",
+            "1:3",
+            "-seg_labels",
+            "1:5",
+        ]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -766,7 +758,6 @@ def test_niistats_2subj(script_runner, tmp_path):
 
 
 def test_niistats_2subj_all_slice(script_runner, tmp_path):
-
     subj_1_dp = tmp_path / "subj_01"
     subj_2_dp = tmp_path / "subj_02"
 
@@ -803,13 +794,15 @@ def test_niistats_2subj_all_slice(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path) + "/subj_01",
-        str(tmp_path) + "/subj_02",
-        "test.nii",
-        str(results_csv_fp),
-        "-seg",
-        "seg.nii"]
+        [
+            SCRIPT_NAME,
+            str(tmp_path) + "/subj_01",
+            str(tmp_path) + "/subj_02",
+            "test.nii",
+            str(results_csv_fp),
+            "-seg",
+            "seg.nii",
+        ]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -826,7 +819,6 @@ def test_niistats_2subj_all_slice(script_runner, tmp_path):
 
 
 def test_niistats_2D_luthresh(script_runner, tmp_path):
-
     nii_fp = tmp_path / "two_dim.nii"
     nii_obj_1 = nib.nifti1.Nifti1Image(np.arange(100).reshape((10, 10)), 2 * np.eye(4))
     nii_obj_1.to_filename(nii_fp)
@@ -835,14 +827,16 @@ def test_niistats_2D_luthresh(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path),
-        "two_dim.nii",
-        str(results_csv_fp),
-        "-l",
-        "10",
-        "-u",
-        "90"]
+        [
+            SCRIPT_NAME,
+            str(tmp_path),
+            "two_dim.nii",
+            str(results_csv_fp),
+            "-l",
+            "10",
+            "-u",
+            "90",
+        ]
     )
     assert result.success
     assert results_csv_fp.is_file()
@@ -859,7 +853,6 @@ def test_niistats_2D_luthresh(script_runner, tmp_path):
 
 
 def test_niistats_3d_luthresh(script_runner, tmp_path):
-
     subj_1_dp = tmp_path / "subj_01"
     subj_2_dp = tmp_path / "subj_02"
 
@@ -896,17 +889,19 @@ def test_niistats_3d_luthresh(script_runner, tmp_path):
     error_csv_fp = tmp_path / "results_errors.csv"
 
     result = script_runner.run(
-        [SCRIPT_NAME,
-        str(tmp_path) + "/subj_01",
-        str(tmp_path) + "/subj_02",
-        "test.nii",
-        str(results_csv_fp),
-        "-seg",
-        "seg.nii",
-        "-l",
-        "25",
-        "-u",
-        "175"]
+        [
+            SCRIPT_NAME,
+            str(tmp_path) + "/subj_01",
+            str(tmp_path) + "/subj_02",
+            "test.nii",
+            str(results_csv_fp),
+            "-seg",
+            "seg.nii",
+            "-l",
+            "25",
+            "-u",
+            "175",
+        ]
     )
     assert result.success
     assert results_csv_fp.is_file()
